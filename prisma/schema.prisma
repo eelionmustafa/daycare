@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// SQLite for local development. For production on Vercel, switch provider to
+// "postgresql" (e.g. Neon via the Vercel Marketplace) and update DATABASE_URL.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         String   @default("PARENT")
+  createdAt    DateTime @default(now())
+
+  children Child[]
+  invoices Invoice[]
+}
+
+model Child {
+  id               String    @id @default(cuid())
+  firstName        String
+  lastName         String
+  birthday         DateTime?
+  notes            String?
+  emergencyName    String?
+  emergencyPhone   String?
+  emergencyRelation String?
+  active           Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+
+  parentId String
+  parent   User   @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  attendance AttendanceRecord[]
+  invoices   Invoice[]
+}
+
+model AttendanceRecord {
+  id      String           @id @default(cuid())
+  childId String
+  child   Child            @relation(fields: [childId], references: [id], onDelete: Cascade)
+  date    DateTime
+  status  String
+  note    String?
+
+  @@unique([childId, date])
+  @@index([date])
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  number      String        @unique
+  title       String
+  description String?
+  amountCents Int
+  currency    String        @default("EUR")
+  status      String        @default("SENT")
+  issuedAt    DateTime      @default(now())
+  dueAt       DateTime?
+  paidAt      DateTime?
+
+  parentId String
+  parent   User    @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  childId  String?
+  child    Child?  @relation(fields: [childId], references: [id], onDelete: SetNull)
+
+  payments Payment[]
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amountCents Int
+  method      String        @default("CASH")
+  paidAt      DateTime      @default(now())
+  note        String?
+  receiptNo   String        @unique
+}
+
+model EnrollmentApplication {
+  id             String            @id @default(cuid())
+  parentName     String
+  phone          String
+  email          String?
+  childName      String
+  childAge       Int?
+  childBirthday  String?
+  emergencyName  String?
+  emergencyPhone String?
+  previousCare   String?
+  notes          String?
+  status         String            @default("NEW")
+  adminNote      String?
+  createdAt      DateTime          @default(now())
+}
+
+model Album {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String?
+  sortOrder   Int     @default(0)
+  photos      Photo[]
+}
+
+model Photo {
+  id        String      @id @default(cuid())
+  url       String
+  caption   String?
+  source    String      @default("UPLOAD")
+  fbId      String?     @unique
+  width     Int?
+  height    Int?
+  featured  Boolean     @default(false)
+  homepage  Boolean     @default(false)
+  visible   Boolean     @default(true)
+  sortOrder Int         @default(0)
+  createdAt DateTime    @default(now())
+
+  albumId String?
+  album   Album?  @relation(fields: [albumId], references: [id], onDelete: SetNull)
+}
+
+model StaffMember {
+  id        String  @id @default(cuid())
+  name      String
+  position  String
+  bio       String?
+  photoUrl  String?
+  years     String?
+  sortOrder Int     @default(0)
+  visible   Boolean @default(true)
+}
+
+model Testimonial {
+  id         String  @id @default(cuid())
+  parentName String
+  text       String
+  photoUrl   String?
+  sortOrder  Int     @default(0)
+  visible    Boolean @default(true)
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// Key-value store for everything the daycare owner should be able to edit:
+// address, phone, hours, hero text, Facebook page id/token, bank details, etc.
+model SiteSetting {
+  key   String @id
+  value String
+}
