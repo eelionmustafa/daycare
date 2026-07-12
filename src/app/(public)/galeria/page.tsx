@@ -1,77 +1,91 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { getSettings } from "@/lib/settings";
 import { Reveal } from "@/components/Reveal";
-import { GalleryExplorer } from "@/components/GalleryExplorer";
+import { MagicalGallery, GalleryIntroDecor, type MagicChapter } from "@/components/MagicalGallery";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Galeria — Kujtimet tona",
-  description:
-    "Fotot e vërteta nga ditët tona në Mësimi Kreativ: aktivitete, projekte kreative, festa dhe momente nga klasa.",
+  title: "Galeria — Mësimi Kreativ",
+  description: "Galeria e fotove të Mësimit Kreativ.",
 };
 
+const CHAPTER_ICON: Record<string, string> = {
+  festa: "balloon",
+  "projekte-kreative": "palette",
+  "momente-klase": "book",
+  "aktivitete-jashte": "kite",
+  aktivitete: "star",
+  evente: "pennant",
+  "kujtime-te-vecanta": "heart",
+};
+
+const MAX_PER_CHAPTER = 24;
+
 export default async function GalleryPage() {
-  const [photos, albums, settings] = await Promise.all([
-    db.photo.findMany({
-      where: { visible: true },
-      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-      include: { album: true },
-    }),
+  const [albums, noAlbumPhotos] = await Promise.all([
     db.album.findMany({
       orderBy: { sortOrder: "asc" },
-      include: { _count: { select: { photos: { where: { visible: true } } } } },
+      include: {
+        photos: {
+          // Only real synced Facebook photos — no placeholders, no manual demo shots.
+          where: { visible: true, source: "FACEBOOK" },
+          orderBy: [{ post: { postedAt: "desc" } }, { postOrder: "asc" }],
+          take: MAX_PER_CHAPTER,
+          select: { id: true, url: true, width: true, height: true, featured: true },
+        },
+      },
     }),
-    getSettings(),
+    db.photo.findMany({
+      where: { visible: true, source: "FACEBOOK", albumId: null },
+      orderBy: [{ post: { postedAt: "desc" } }, { postOrder: "asc" }],
+      take: MAX_PER_CHAPTER,
+      select: { id: true, url: true, width: true, height: true, featured: true },
+    }),
   ]);
 
+  const chapters: MagicChapter[] = albums
+    .filter((a) => a.photos.length > 0)
+    .map((a) => ({
+      id: a.id,
+      title: a.name,
+      icon: CHAPTER_ICON[a.slug] ?? "star",
+      photos: a.photos,
+    }));
+
+  if (noAlbumPhotos.length > 0) {
+    chapters.push({
+      id: "pa-album",
+      title: "Kujtime të tjera",
+      icon: "teddy",
+      photos: noAlbumPhotos,
+    });
+  }
+
   return (
-    <div className="pt-24 pb-20">
-      <section className="texture-paper bg-blush/50 py-14 sm:py-16">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <Reveal>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-terracotta">
-              Galeria jonë
-            </p>
-            <h1 className="mt-3 font-display text-4xl font-semibold sm:text-5xl">
-              Kështu duken <span className="underline-hand">ditët tona</span>
-            </h1>
-            <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-              Këto janë momentet e vërteta që i ndajmë me prindërit — të njëjtat foto që
-              i gjeni edhe në{" "}
-              <a
-                href={settings.facebook_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-bold text-sky hover:underline"
-              >
-                faqen tonë të Facebook-ut
-              </a>
-              . Galeria përditësohet vazhdimisht me aktivitetet më të reja.
-            </p>
-          </Reveal>
-        </div>
+    <div
+      className="overflow-hidden pb-24 pt-24"
+      style={{
+        background:
+          "linear-gradient(175deg, #eaf4fd 0%, #f3eefb 24%, #fdf1f5 46%, #fff6e8 68%, #ecf8f0 88%, #eaf4fd 100%)",
+      }}
+    >
+      <section className="relative mx-auto max-w-3xl px-4 pb-6 pt-8 text-center sm:px-6">
+        <Reveal>
+          <GalleryIntroDecor />
+          <h1 className="mt-2 font-display text-4xl font-semibold leading-tight text-[#4b4470] sm:text-5xl">
+            Galeria
+          </h1>
+        </Reveal>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
-        <GalleryExplorer
-          photos={photos.map((p) => ({
-            id: p.id,
-            url: p.url,
-            caption: p.caption,
-            width: p.width,
-            height: p.height,
-            albumSlug: p.album?.slug ?? null,
-            albumName: p.album?.name ?? null,
-            source: p.source,
-            featured: p.featured,
-          }))}
-          albums={albums
-            .filter((a) => a._count.photos > 0)
-            .map((a) => ({ slug: a.slug, name: a.name, count: a._count.photos }))}
-        />
-      </section>
+      {chapters.length === 0 ? (
+        <p className="pt-10 text-center text-[#6b6293]">
+          Fotot do të shfaqen këtu shumë shpejt.
+        </p>
+      ) : (
+        <MagicalGallery chapters={chapters} />
+      )}
     </div>
   );
 }

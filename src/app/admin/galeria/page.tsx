@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { runFacebookSync, uploadPhotos } from "@/app/actions/photos";
 import { updatePhoto, togglePhotoFlag, deletePhoto } from "@/app/actions/admin";
+import { formatDate } from "@/lib/format";
+import { IconSync, IconUpload } from "@/components/icons";
 
 function FlagButton({
   photoId,
@@ -49,7 +51,7 @@ export default async function AdminGalleryPage({
       searchParams,
       db.photo.findMany({
         orderBy: [{ visible: "asc" }, { createdAt: "desc" }, { sortOrder: "asc" }],
-        include: { album: true },
+        include: { album: true, post: true },
       }),
       db.album.findMany({ orderBy: { sortOrder: "asc" } }),
       getSettings(),
@@ -110,20 +112,23 @@ export default async function AdminGalleryPage({
           </p>
           {!fbConfigured && (
             <p className="mt-3 rounded-xl bg-sun/15 px-4 py-3 text-sm">
-              ⚠️ Lidhja me Facebook s&apos;është konfiguruar ende. Shtoni Page ID dhe Access
-              Token te <strong>Cilësimet</strong>, ose ngarkoni fotot manualisht djathtas.
+              <strong>Kujdes:</strong> Lidhja me Facebook s&apos;është konfiguruar ende. Shtoni
+              Page ID dhe Access Token te <strong>Cilësimet</strong>, ose ngarkoni fotot
+              manualisht djathtas.
             </p>
           )}
           <form action={runFacebookSync} className="mt-4">
-            <button className="rounded-full bg-sky px-6 py-3 font-bold text-white shadow-soft transition-colors hover:opacity-90">
-              🔄 Sinkronizo tani
+            <button className="inline-flex items-center gap-2 rounded-full bg-sky px-6 py-3 font-bold text-white shadow-soft transition-colors hover:opacity-90">
+              <IconSync className="h-4.5 w-4.5" /> Sinkronizo tani
             </button>
           </form>
         </section>
 
         {/* Manual upload */}
         <section className="rounded-3xl bg-white p-6 shadow-soft">
-          <h2 className="font-display text-xl font-semibold">📤 Ngarkim manual</h2>
+          <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
+            <IconUpload className="h-5 w-5 text-terracotta" /> Ngarkim manual
+          </h2>
           <p className="mt-2 text-sm text-ink-soft">
             Ngarkoni foto direkt nga kompjuteri ose telefoni (deri 8MB secila).
           </p>
@@ -160,8 +165,8 @@ export default async function AdminGalleryPage({
       <section>
         <h2 className="font-display text-xl font-semibold">Të gjitha fotot</h2>
         <p className="mt-1 text-sm text-ink-soft">
-          ✅ E dukshme = shfaqet në galeri · ⭐ Ballina = seksioni i fotove në faqen kryesore ·
-          🏠 Hero = kolazhi i madh i ballinës
+          E dukshme = shfaqet në galeri · Ballina = seksioni i fotove në faqen kryesore ·
+          Hero = kolazhi i madh i ballinës
         </p>
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {photos.map((p) => (
@@ -175,10 +180,11 @@ export default async function AdminGalleryPage({
                   alt={p.caption ?? "Foto"}
                   width={p.width ?? 600}
                   height={p.height ?? 450}
-                  className="aspect-[4/3] w-full object-cover"
+                  className="aspect-4/3 w-full object-cover"
                 />
                 <span className="absolute left-2 top-2 rounded-full bg-ink/70 px-2.5 py-1 text-[11px] font-bold text-white">
                   {p.source === "FACEBOOK" ? "Facebook" : "Ngarkuar"}
+                  {p.post && ` · postimi ${formatDate(p.post.postedAt)}`}
                 </span>
                 {!p.visible && (
                   <span className="absolute right-2 top-2 rounded-full bg-sun px-2.5 py-1 text-[11px] font-bold text-ink">
@@ -188,9 +194,9 @@ export default async function AdminGalleryPage({
               </div>
 
               <div className="mt-3 flex flex-wrap gap-1.5">
-                <FlagButton photoId={p.id} flag="visible" on={p.visible} labelOn="✅ E dukshme" labelOff="🚫 E fshehur" />
-                <FlagButton photoId={p.id} flag="featured" on={p.featured} labelOn="⭐ Ballina" labelOff="☆ Ballina" />
-                <FlagButton photoId={p.id} flag="homepage" on={p.homepage} labelOn="🏠 Hero" labelOff="🏠 Hero" />
+                <FlagButton photoId={p.id} flag="visible" on={p.visible} labelOn="E dukshme ✓" labelOff="E fshehur" />
+                <FlagButton photoId={p.id} flag="featured" on={p.featured} labelOn="Ballina ✓" labelOff="Ballina" />
+                <FlagButton photoId={p.id} flag="homepage" on={p.homepage} labelOn="Hero ✓" labelOff="Hero" />
               </div>
 
               <form action={updatePhoto} className="mt-3 space-y-2">

@@ -6,9 +6,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "", priority: 1 },
     { path: "/rreth-nesh", priority: 0.9 },
     { path: "/galeria", priority: 0.9 },
-    { path: "/aktivitetet", priority: 0.8 },
+    { path: "/gjeneratat", priority: 0.8 },
     { path: "/regjistrohu", priority: 0.9 },
-    { path: "/stafi", priority: 0.7 },
     { path: "/pyetjet", priority: 0.7 },
     { path: "/kontakti", priority: 0.8 },
   ];

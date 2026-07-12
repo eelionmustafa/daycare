@@ -17,9 +17,9 @@ export const SETTING_DEFAULTS: Record<string, string> = {
   instagram_url: "",
   maps_query: "Rruga Henry Dunant, C15-III, Nr.46, Prishtinë 10000",
   ages: "6–11 vjeç",
-  hero_headline: "Këtu fëmijët mësojnë, luajnë dhe rriten bashkë.",
+  hero_headline: "Mirësevini në programin tonë të qëndrimit ditor.",
   hero_subline:
-    "Mësimi Kreativ është një hapësirë e ngrohtë ku fëmijët tuaj kalojnë pasditet me kujdes, krijimtari dhe shoqëri të vërtetë.",
+    "Mësimi Kreativ është vend i vlerave edukativo-arsimore, ku fëmija juaj fiton mundësi të reja që ta kapë hapin e suksesit.",
   bank_name: "",
   bank_account: "",
   bank_holder: "Mësimi Kreativ",

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0"/><feComposite operator="over" in2="SourceGraphic"/></filter>
+    <radialGradient id="v" cx="50%" cy="42%" r="75%"><stop offset="0%" stop-color="#E4EAEF"/><stop offset="100%" stop-color="#E4EAEF" stop-opacity="0.92"/></radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="#E4EAEF"/>
+  <rect width="1080" height="1080" fill="url(#v)"/>
+  <g opacity="0.5" filter="url(#g)"><path d="M 421.2000000000001 622.08 L 615.6000000000001 524.88 L 498.9600000000001 592.9200000000001 Z" fill="#8FA9BD"/><path d="M 498.9600000000001 592.9200000000001 L 523.2600000000001 656.1 L 542.7 597.7800000000001 Z" fill="#8FA9BD" opacity="0.75"/><path d="M 626.4 777.6 q 37.800000000000004 -75.60000000000001 75.60000000000001 0 t 75.60000000000001 0 t 75.60000000000001 0 t 75.60000000000001 0" fill="none" stroke="#5D7B93" stroke-width="7" stroke-linecap="round"/></g>
+  <g opacity="0.35">
+    <text x="50%" y="1026" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#5D7B93">Fotografia e vërtetë vjen nga faqja jonë në Facebook</text>
+  </g>
+</svg>

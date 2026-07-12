@@ -4,6 +4,7 @@ import { getSettings } from "@/lib/settings";
 import { submitEnrollment } from "@/app/actions/public";
 import { Field, SubmitButton } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
+import { IconConfetti, IconUser, IconChild, IconAlert, IconNote } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,7 @@ export default async function EnrollPage({
       <div className="flex min-h-screen items-center justify-center px-4 pt-24 pb-16">
         <Reveal className="w-full max-w-lg">
           <div className="rounded-3xl bg-white p-10 text-center shadow-lift">
-            <span className="text-5xl" aria-hidden>🎉</span>
+            <IconConfetti className="mx-auto h-14 w-14 text-terracotta" />
             <h1 className="mt-4 font-display text-3xl font-semibold">
               Aplikimi u dërgua me sukses!
             </h1>
@@ -70,10 +71,10 @@ export default async function EnrollPage({
               Regjistrimi online
             </p>
             <h1 className="mt-3 font-display text-4xl font-semibold sm:text-5xl">
-              Hapi i parë drejt <span className="underline-hand">pasditeve më të bukura</span>
+              Regjistro fëmijën <span className="underline-hand">online</span>
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-              Plotësoni formularin dhe ne kujdesemi për gjithçka tjetër. Nëse preferoni
+              Plotësoni formularin. Nëse preferoni
               bisedën direkte, na telefononi në{" "}
               <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="font-bold text-terracotta">
                 {s.phone}
@@ -109,8 +110,8 @@ export default async function EnrollPage({
             )}
             <form action={submitEnrollment} className="space-y-8">
               <fieldset className="space-y-4">
-                <legend className="font-display text-xl font-semibold">
-                  👤 Të dhënat e prindit
+                <legend className="flex items-center gap-2 font-display text-xl font-semibold">
+                  <IconUser className="h-5.5 w-5.5 text-ink-soft" /> Të dhënat e prindit
                 </legend>
                 <Field label="Emri dhe mbiemri" name="parentName" required />
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -120,8 +121,8 @@ export default async function EnrollPage({
               </fieldset>
 
               <fieldset className="space-y-4">
-                <legend className="font-display text-xl font-semibold">
-                  🧒 Të dhënat e fëmijës
+                <legend className="flex items-center gap-2 font-display text-xl font-semibold">
+                  <IconChild className="h-5.5 w-5.5 text-ink-soft" /> Të dhënat e fëmijës
                 </legend>
                 <Field label="Emri dhe mbiemri i fëmijës" name="childName" required />
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -131,8 +132,9 @@ export default async function EnrollPage({
               </fieldset>
 
               <fieldset className="space-y-4">
-                <legend className="font-display text-xl font-semibold">
-                  🚨 Kontakti emergjent <span className="text-sm font-normal text-ink-soft">(opsionale)</span>
+                <legend className="flex items-center gap-2 font-display text-xl font-semibold">
+                  <IconAlert className="h-5.5 w-5.5 text-ink-soft" /> Kontakti emergjent{" "}
+                  <span className="text-sm font-normal text-ink-soft">(opsionale)</span>
                 </legend>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Emri" name="emergencyName" />
@@ -141,8 +143,9 @@ export default async function EnrollPage({
               </fieldset>
 
               <fieldset className="space-y-4">
-                <legend className="font-display text-xl font-semibold">
-                  📝 Informata shtesë <span className="text-sm font-normal text-ink-soft">(opsionale)</span>
+                <legend className="flex items-center gap-2 font-display text-xl font-semibold">
+                  <IconNote className="h-5.5 w-5.5 text-ink-soft" /> Informata shtesë{" "}
+                  <span className="text-sm font-normal text-ink-soft">(opsionale)</span>
                 </legend>
                 <Field
                   label="Përvoja e mëparshme me çerdhe/qendra"

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0"/><feComposite operator="over" in2="SourceGraphic"/></filter>
+    <radialGradient id="v" cx="50%" cy="42%" r="75%"><stop offset="0%" stop-color="#F6E7D8"/><stop offset="100%" stop-color="#F6E7D8" stop-opacity="0.92"/></radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="#F6E7D8"/>
+  <rect width="1080" height="1080" fill="url(#v)"/>
+  <g opacity="0.5" filter="url(#g)"><circle cx="302.40000000000003" cy="583.2" r="97.2" fill="#E2936B"/><line x1="407.6" y1="583.2" x2="421.6" y2="583.2" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="383.0" y1="650.8" x2="393.7" y2="659.8" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="320.7" y1="686.8" x2="323.1" y2="700.6" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="249.8" y1="674.3" x2="242.8" y2="686.4" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="203.5" y1="619.2" x2="190.4" y2="624.0" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="203.5" y1="547.2" x2="190.4" y2="542.4" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="249.8" y1="492.1" x2="242.8" y2="480.0" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="320.7" y1="479.6" x2="323.1" y2="465.8" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><line x1="383.0" y1="515.6" x2="393.7" y2="506.6" stroke="#E2936B" stroke-width="5" stroke-linecap="round"/><path d="M 626.4 777.6 q 37.800000000000004 -75.60000000000001 75.60000000000001 0 t 75.60000000000001 0 t 75.60000000000001 0 t 75.60000000000001 0" fill="none" stroke="#A9714B" stroke-width="7" stroke-linecap="round"/></g>
+  <g opacity="0.35">
+    <text x="50%" y="1026" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#A9714B">Fotografia e vërtetë vjen nga faqja jonë në Facebook</text>
+  </g>
+</svg>

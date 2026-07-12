@@ -9,7 +9,7 @@ const RULES: { slug: string; keywords: string[] }[] = [
   {
     slug: "festa",
     keywords: [
-      "ditelindj", "festa", "festojme", "festuam", "gezuar", "urime",
+      "ditelindje", "festa", "festojme", "festuam", "gezuar", "urime",
       "birthday", "torta", "tortë", "kek", "ballon", "surpriz",
     ],
   },
@@ -39,8 +39,8 @@ const RULES: { slug: string; keywords: string[] }[] = [
   {
     slug: "momente-klase",
     keywords: [
-      "detyr", "mesim", "mesuam", "lexim", "lexuam", "test", "klas",
-      "shkoll", "libr", "shkrim", "matematik", "abetar", "ora e",
+      "detyra", "mesim", "mesuam", "lexim", "lexuam", "test", "klas",
+      "shkoll", "libr", "shkrim", "matematike", "abetar", "ora e",
     ],
   },
   {

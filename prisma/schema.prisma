@@ -2,10 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// SQLite for local development. For production on Vercel, switch provider to
-// "postgresql" (e.g. Neon via the Vercel Marketplace) and update DATABASE_URL.
+// Postgres (Neon, via Vercel Marketplace) for both local dev and production.
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -110,6 +109,24 @@ model Album {
   photos      Photo[]
 }
 
+// A Facebook post (or a manual upload batch) that groups one or more
+// photos together, in the order and on the date they were originally
+// posted — this is what lets the gallery/activities feed mirror the
+// Page's actual timeline instead of a flat photo pile.
+model Post {
+  id        String   @id @default(cuid())
+  fbId      String?  @unique
+  message   String?
+  postedAt  DateTime
+  source    String   @default("UPLOAD")
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  photos Photo[]
+
+  @@index([postedAt])
+}
+
 model Photo {
   id        String      @id @default(cuid())
   url       String
@@ -126,6 +143,12 @@ model Photo {
 
   albumId String?
   album   Album?  @relation(fields: [albumId], references: [id], onDelete: SetNull)
+
+  // Position within its post's attachments, and the post it belongs to —
+  // both null for photos that aren't part of a grouped post.
+  postId      String?
+  post        Post?   @relation(fields: [postId], references: [id], onDelete: SetNull)
+  postOrder   Int     @default(0)
 }
 
 model StaffMember {

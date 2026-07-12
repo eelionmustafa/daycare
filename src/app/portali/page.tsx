@@ -28,7 +28,7 @@ export default async function PortalHome() {
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-3xl font-semibold">
-          Mirë se erdhët, {firstName}! 👋
+          Mirë se erdhët, {firstName}!
         </h1>
         <p className="mt-1 text-ink-soft">
           Këtu gjeni gjithçka për fëmijët tuaj në Mësimin Kreativ.

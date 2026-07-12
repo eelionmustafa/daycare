@@ -10,8 +10,7 @@ const links = [
   { href: "/", label: "Ballina" },
   { href: "/rreth-nesh", label: "Rreth nesh" },
   { href: "/galeria", label: "Galeria" },
-  { href: "/aktivitetet", label: "Aktivitetet" },
-  { href: "/stafi", label: "Stafi" },
+  { href: "/gjeneratat", label: "Gjeneratat" },
   { href: "/pyetjet", label: "Pyetjet" },
   { href: "/kontakti", label: "Kontakti" },
 ];
@@ -20,6 +19,7 @@ export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -28,14 +28,19 @@ export function SiteNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
+  // Close the mobile menu on route change — adjusted during render (not in
+  // an effect) per https://react.dev/learn/you-might-not-need-an-effect
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled || open
           ? "bg-cream/95 shadow-soft backdrop-blur"
-          : "bg-gradient-to-b from-cream/90 to-transparent"
+          : "bg-linear-to-b from-cream/90 to-transparent"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">

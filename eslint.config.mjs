@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Editor auto-save history, not source code.
+    ".history/**",
   ]),
 ]);
 

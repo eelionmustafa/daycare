@@ -54,3 +54,8 @@ export function dateOnly(d: Date | string) {
 export function todayUTC() {
   return dateOnly(new Date());
 }
+
+/** Days between a past date and now (fractional). Used for staleness checks. */
+export function daysSince(d: Date | string) {
+  return (Date.now() - new Date(d).getTime()) / (1000 * 60 * 60 * 24);
+}

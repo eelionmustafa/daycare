@@ -3,6 +3,7 @@ import { getSettings } from "@/lib/settings";
 import { submitContact } from "@/app/actions/public";
 import { Field, SubmitButton } from "@/components/ui";
 import { Reveal } from "@/components/Reveal";
+import { IconPin, IconPhone, IconMail, IconClock } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +21,10 @@ export default async function ContactPage({
   const [{ sukses, gabim }, s] = await Promise.all([searchParams, getSettings()]);
 
   const infoItems = [
-    { icon: "📍", label: "Adresa", value: s.address },
-    { icon: "📞", label: "Telefoni", value: s.phone, href: `tel:${s.phone.replace(/\s/g, "")}` },
-    { icon: "✉️", label: "Email", value: s.email, href: `mailto:${s.email}` },
-    { icon: "🕐", label: "Orari", value: s.hours },
+    { icon: <IconPin className="h-7 w-7" />, label: "Adresa", value: s.address },
+    { icon: <IconPhone className="h-7 w-7" />, label: "Telefoni", value: s.phone, href: `tel:${s.phone.replace(/\s/g, "")}` },
+    { icon: <IconMail className="h-7 w-7" />, label: "Email", value: s.email, href: `mailto:${s.email}` },
+    { icon: <IconClock className="h-7 w-7" />, label: "Orari", value: s.hours },
   ];
 
   return (
@@ -51,7 +52,7 @@ export default async function ContactPage({
             <div className="grid gap-4 sm:grid-cols-2">
               {infoItems.map((item) => (
                 <div key={item.label} className="rounded-2xl bg-white p-5 shadow-soft">
-                  <span className="text-2xl" aria-hidden>{item.icon}</span>
+                  <span aria-hidden className="inline-block text-ink-soft">{item.icon}</span>
                   <p className="mt-2 text-xs font-bold uppercase tracking-wider text-sage-deep">
                     {item.label}
                   </p>
@@ -105,7 +106,7 @@ export default async function ContactPage({
             </p>
             {sukses && (
               <p className="mt-4 rounded-xl bg-sage/15 px-4 py-3 text-sm font-semibold text-sage-deep">
-                Faleminderit! Mesazhi juaj u dërgua — ju kontaktojmë së shpejti. 🌱
+                Faleminderit! Mesazhi juaj u dërgua — ju kontaktojmë së shpejti.
               </p>
             )}
             {gabim && (

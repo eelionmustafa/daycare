@@ -33,14 +33,6 @@ export default async function FaqPage() {
       a: `Jemi të hapur ${s.hours}. Nga ora 07:00 deri në 12:30 fëmijët hanë mëngjes e drekë, bëjnë detyrat e shtëpisë, përgatiten për teste, bëjnë aktivitete dhe dalin në park. Në orën 13:00 mësueset i dërgojnë vetë në shkollë. Pas orarit shkollor, mësueset i marrin përsëri dhe fëmijët presin te qendra derisa vijnë prindërit, më së largu deri në 17:30.`,
     },
     {
-      q: "Si funksionon prezenca?",
-      a: "Prezencën e mban stafi ynë çdo ditë me listë të thjeshtë — pa aplikacione të ndërlikuara për fëmijët. Ju si prind e shihni historikun e plotë të prezencës në portalin e prindërve, në çdo moment.",
-    },
-    {
-      q: "Si funksionojnë pagesat?",
-      a: "Faturat mujore shfaqen në portalin e prindërve, ku shihni statusin, historikun dhe kuponat e pagesës. Paguani si t'ju vijë më lehtë: në qendër ose me transfertë bankare. Për detajet e tarifave na kontaktoni direkt.",
-    },
-    {
       q: "Si mund ta kontaktoj qendrën?",
       a: `Na telefononi në ${s.phone}, na shkruani në ${s.email}, ose përdorni formularin e kontaktit. Përgjigjemi gjatë orarit ${s.hours}. Edhe dera jonë është gjithmonë e hapur — ejani për një kafe dhe një vizitë.`,
     },

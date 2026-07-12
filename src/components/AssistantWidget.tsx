@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { IconSun } from "@/components/icons";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 const WELCOME: Msg = {
   role: "assistant",
   content:
-    "Përshëndetje! 👋 Unë jam asistenti i Mësimit Kreativ. Më pyesni për orarin, moshat, aktivitetet ose si ta regjistroni fëmijën tuaj.",
+    "Përshëndetje! Unë jam asistenti i Mësimit Kreativ. Si mund t'ju ndihmoj?",
 };
 
 const SUGGESTIONS = [
@@ -18,7 +19,7 @@ const SUGGESTIONS = [
   "Ku ndodheni?",
   "Cilat aktivitete ofroni?",
   "A ofroni ushqim për fëmijët?",
-  "Si te regjistrohem për një vizitë?",
+  "Si të regjistrohem për një vizitë?",
 ];
 
 export function AssistantWidget() {
@@ -77,8 +78,8 @@ export function AssistantWidget() {
             className="mb-3 flex h-[28rem] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-3xl bg-white shadow-lift ring-1 ring-ink/5"
           >
             <div className="flex items-center gap-3 bg-terracotta px-5 py-4 text-white">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-lg">
-                ☀️
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20">
+                <IconSun className="h-5.5 w-5.5" aria-hidden />
               </span>
               <div>
                 <p className="font-display font-semibold leading-tight">Pyet Mësimin Kreativ</p>

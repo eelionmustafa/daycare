@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { getSettings } from "@/lib/settings";
+import { IconSun } from "@/components/icons";
 
 export async function SiteFooter() {
   const s = await getSettings();
@@ -28,8 +29,7 @@ export async function SiteFooter() {
             {[
               ["/rreth-nesh", "Rreth nesh"],
               ["/galeria", "Galeria"],
-              ["/aktivitetet", "Aktivitetet"],
-              ["/stafi", "Stafi ynë"],
+              ["/gjeneratat", "Gjeneratat"],
               ["/pyetjet", "Pyetje të shpeshta"],
               ["/regjistrohu", "Regjistrimi"],
             ].map(([href, label]) => (
@@ -82,7 +82,10 @@ export async function SiteFooter() {
       <div className="border-t border-ink/5">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-ink-soft sm:flex-row sm:px-6">
           <p>© {new Date().getFullYear()} {s.site_name}. Të gjitha të drejtat e rezervuara.</p>
-          <p>Bërë me kujdes për fëmijët tanë ☀️</p>
+          <p className="flex items-center gap-1.5">
+            Bërë me kujdes për fëmijët tanë
+            <IconSun className="h-4 w-4" aria-hidden />
+          </p>
         </div>
       </div>
     </footer>

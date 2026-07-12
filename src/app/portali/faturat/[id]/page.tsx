@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 import { formatMoney, formatDate, formatShortDate } from "@/lib/format";
 import { StatusBadge } from "@/components/ui";
+import { IconEuro, IconBank } from "@/components/icons";
 
 export default async function InvoiceDetailPage({
   params,
@@ -76,17 +77,26 @@ export default async function InvoiceDetailPage({
               Për pagesë: {formatMoney(remaining, invoice.currency)}
             </p>
             <div className="mt-3 space-y-2 text-sm leading-relaxed text-ink-soft">
-              <p>💶 <strong>Në qendër:</strong> paguani me para në dorë te administrata — kuponi ju jepet menjëherë.</p>
+              <p className="flex gap-2">
+                <IconEuro className="mt-0.5 h-4 w-4 shrink-0" />
+                <span><strong>Në qendër:</strong> paguani me para në dorë te administrata — kuponi ju jepet menjëherë.</span>
+              </p>
               {hasBank ? (
-                <p>
-                  🏦 <strong>Me bankë:</strong> {settings.bank_name}, llogaria{" "}
-                  <span className="font-mono">{settings.bank_account}</span> ({settings.bank_holder}).
-                  Në përshkrim shënoni numrin e faturës: <strong>{invoice.number}</strong>.
+                <p className="flex gap-2">
+                  <IconBank className="mt-0.5 h-4 w-4 shrink-0" />
+                  <span>
+                    <strong>Me bankë:</strong> {settings.bank_name}, llogaria{" "}
+                    <span className="font-mono">{settings.bank_account}</span> ({settings.bank_holder}).
+                    Në përshkrim shënoni numrin e faturës: <strong>{invoice.number}</strong>.
+                  </span>
                 </p>
               ) : (
-                <p>
-                  🏦 <strong>Me bankë:</strong> na kontaktoni në {settings.phone} për të dhënat
-                  bankare.
+                <p className="flex gap-2">
+                  <IconBank className="mt-0.5 h-4 w-4 shrink-0" />
+                  <span>
+                    <strong>Me bankë:</strong> na kontaktoni në {settings.phone} për të dhënat
+                    bankare.
+                  </span>
                 </p>
               )}
             </div>

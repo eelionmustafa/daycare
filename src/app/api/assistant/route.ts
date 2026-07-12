@@ -103,7 +103,7 @@ function answerFromKnowledgeBase(q: string, s: Record<string, string>): string {
   const has = (...words: string[]) => words.some((w) => t.includes(w));
 
   if (has("cmim", "pages", "kushton", "price", "cost", "tarif", "sa eshte", "euro")) {
-    return `Për detajet rreth pagesave ju lutemi na kontaktoni direkt në ${s.phone} — do t'ju sqarojmë gjithçka me kënaqësi dhe pa asnjë obligim. 😊`;
+    return `Për detajet rreth pagesave ju lutemi na kontaktoni direkt në ${s.phone} — do t'ju sqarojmë gjithçka me kënaqësi dhe pa asnjë obligim.`;
   }
   if (has("regjistr", "enroll", "aplik", "anetar", "pranoni femij")) {
     return `Regjistrimi është shumë i thjeshtë! Plotësoni formularin online te faqja "Regjistro fëmijën" dhe ne ju kontaktojmë brenda ditës. Nëse preferoni, mund të na telefononi në ${s.phone} ose të vini për një vizitë — fëmijët tuaj janë të mirëseardhur ta shohin qendrën para se të vendosni.`;
@@ -121,10 +121,10 @@ function answerFromKnowledgeBase(q: string, s: Record<string, string>): string {
     return `Për fëmijët që kanë nevojë për më shumë kohë me një lëndë, ofrojmë orë shtesë si kurse, pas orarit shkollor. Na kontaktoni në ${s.phone} për të biseduar për rastin e fëmijës suaj.`;
   }
   if (has("ku ndodheni", "adres", "lokacion", "vendndodh", "where", "location", "ku jeni", "gjej")) {
-    return `Na gjeni në: ${s.address}. Në faqen e kontaktit kemi edhe hartën. Ejani për një vizitë — kafeja është gati! ☕`;
+    return `Na gjeni në: ${s.address}. Në faqen e kontaktit kemi edhe hartën. Ejani për një vizitë. Ju presim!`;
   }
   if (has("kontakt", "telefon", "email", "contact", "thirr")) {
-    return `Na kontaktoni kur të doni: 📞 ${s.phone} ose ✉️ ${s.email}. Përgjigjemi gjatë orarit ${s.hours}.`;
+    return `Na kontaktoni kur të doni: në telefonin ${s.phone} ose me email në ${s.email}. Përgjigjemi gjatë orarit ${s.hours}.`;
   }
   if (has("aktivitet", "activities", "cfare bejne", "program", "detyr", "mesim", "lexim")) {
     return `Dita te ne është plot: detyrat e shtëpisë, përgatitje për teste, aktivitete kreative, dalje në park e natyrë dhe festimi i festave zyrtare — para se fëmijët të shkojnë në shkollë në orën 13:00. Shikoni galerinë tonë — fotot tregojnë më shumë se fjalët!`;
@@ -136,10 +136,10 @@ function answerFromKnowledgeBase(q: string, s: Record<string, string>): string {
     return `Siguria është gjëja e parë te ne: stafi ynë i njeh fëmijët me emër, prezenca mbahet çdo ditë dhe prindërit njoftohen për çdo gjë të rëndësishme. Ejani për një vizitë dhe shihni vetë ambientin.`;
   }
   if (has("faleminderit", "flm", "thank")) {
-    return `S'ka përse! Jemi këtu për çdo pyetje tjetër. Ju presim me kënaqësi te Mësimi Kreativ! ☀️`;
+    return `S'ka përse! Jemi këtu për çdo pyetje tjetër. Ju presim me kënaqësi te Mësimi Kreativ!`;
   }
   if (has("pershendetje", "tung", "hello", "hi", "ckemi", "mire")) {
-    return `Përshëndetje dhe mirë se vini! 👋 Unë jam asistentja e Mësimit Kreativ. Më pyesni për orarin, moshat, aktivitetet, regjistrimin apo si të na gjeni.`;
+    return `Përshëndetje dhe mirë se vini! Unë jam asistentja e Mësimit Kreativ. Më pyesni për orarin, moshat, aktivitetet, regjistrimin apo si të na gjeni.`;
   }
   return `Pyetje e mirë! Për t'ju përgjigjur saktë, më së miri na kontaktoni direkt në ${s.phone} ose ${s.email}. Ndërkohë mund t'ju tregoj për orarin, moshat, aktivitetet ose si bëhet regjistrimi — çfarë ju intereson?`;
 }

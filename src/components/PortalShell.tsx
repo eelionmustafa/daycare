@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/Logo";
 
-export type NavItem = { href: string; label: string; icon: string };
+export type NavItem = { href: string; label: string; icon: React.ReactNode };
 
 export function PortalShell({
   items,
@@ -46,7 +46,7 @@ export function PortalShell({
                     : "text-ink-soft hover:bg-cream hover:text-ink"
                 }`}
               >
-                <span aria-hidden>{item.icon}</span>
+                <span aria-hidden className="[&>svg]:h-5 [&>svg]:w-5">{item.icon}</span>
                 {item.label}
               </Link>
             );

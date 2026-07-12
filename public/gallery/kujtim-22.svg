@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <defs>
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0"/><feComposite operator="over" in2="SourceGraphic"/></filter>
+    <radialGradient id="v" cx="50%" cy="42%" r="75%"><stop offset="0%" stop-color="#EDE4EE"/><stop offset="100%" stop-color="#EDE4EE" stop-opacity="0.92"/></radialGradient>
+  </defs>
+  <rect width="900" height="1200" fill="#EDE4EE"/>
+  <rect width="900" height="1200" fill="url(#v)"/>
+  <g opacity="0.5" filter="url(#g)"><path d="M 252.00000000000003 856.7999999999998 C 138.60000000000002 759.5999999999999 203.40000000000003 686.6999999999999 252.00000000000003 759.5999999999999 C 300.6 686.6999999999999 365.40000000000003 759.5999999999999 252.00000000000003 856.7999999999998 Z" fill="#B296BB"/><path d="M 522 864 q 31.500000000000004 -63.00000000000001 63.00000000000001 0 t 63.00000000000001 0 t 63.00000000000001 0 t 63.00000000000001 0" fill="none" stroke="#8A6E93" stroke-width="7" stroke-linecap="round"/></g>
+  <g opacity="0.35">
+    <text x="50%" y="1146" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#8A6E93">Fotografia e vërtetë vjen nga faqja jonë në Facebook</text>
+  </g>
+</svg>

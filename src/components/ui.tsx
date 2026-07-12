@@ -7,7 +7,7 @@ export function SectionHeading({
   center = false,
 }: {
   eyebrow?: string;
-  title: ReactNode;
+  title?: ReactNode;
   intro?: string;
   center?: boolean;
 }) {
@@ -18,9 +18,11 @@ export function SectionHeading({
           {eyebrow}
         </p>
       )}
-      <h2 className="font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
-        {title}
-      </h2>
+      {title && (
+        <h2 className="font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+          {title}
+        </h2>
+      )}
       {intro && <p className="mt-4 text-lg leading-relaxed text-ink-soft">{intro}</p>}
     </div>
   );

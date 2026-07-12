@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 import { formatMoney, formatDate } from "@/lib/format";
 import { PrintButton } from "@/components/PrintButton";
+import { IconSun } from "@/components/icons";
 
 export default async function ReceiptPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -40,7 +41,7 @@ export default async function ReceiptPage({ params }: { params: Promise<{ id: st
             <p className="text-xs text-ink-soft">{settings.address}</p>
             <p className="text-xs text-ink-soft">{settings.phone} · {settings.email}</p>
           </div>
-          <span className="text-3xl" aria-hidden>☀️</span>
+          <IconSun className="h-9 w-9" />
         </div>
 
         <div className="py-5 text-center">
