@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { db } from "@/lib/db";
+import { getLiveFacebookPhotos } from "@/lib/facebook";
 import { Reveal } from "@/components/Reveal";
-import { MagicalGallery, GalleryIntroDecor, type MagicChapter } from "@/components/MagicalGallery";
+import { MagicalGallery, GalleryIntroDecor } from "@/components/MagicalGallery";
 
 export const dynamic = "force-dynamic";
 
@@ -10,57 +10,10 @@ export const metadata: Metadata = {
   description: "Galeria e fotove të Mësimit Kreativ.",
 };
 
-const CHAPTER_ICON: Record<string, string> = {
-  festa: "balloon",
-  "projekte-kreative": "palette",
-  "momente-klase": "book",
-  "aktivitete-jashte": "kite",
-  aktivitete: "star",
-  evente: "pennant",
-  "kujtime-te-vecanta": "heart",
-};
-
-const MAX_PER_CHAPTER = 24;
-
 export default async function GalleryPage() {
-  const [albums, noAlbumPhotos] = await Promise.all([
-    db.album.findMany({
-      orderBy: { sortOrder: "asc" },
-      include: {
-        photos: {
-          // Only real synced Facebook photos — no placeholders, no manual demo shots.
-          where: { visible: true, source: "FACEBOOK" },
-          orderBy: [{ post: { postedAt: "desc" } }, { postOrder: "asc" }],
-          take: MAX_PER_CHAPTER,
-          select: { id: true, url: true, width: true, height: true, featured: true },
-        },
-      },
-    }),
-    db.photo.findMany({
-      where: { visible: true, source: "FACEBOOK", albumId: null },
-      orderBy: [{ post: { postedAt: "desc" } }, { postOrder: "asc" }],
-      take: MAX_PER_CHAPTER,
-      select: { id: true, url: true, width: true, height: true, featured: true },
-    }),
-  ]);
-
-  const chapters: MagicChapter[] = albums
-    .filter((a) => a.photos.length > 0)
-    .map((a) => ({
-      id: a.id,
-      title: a.name,
-      icon: CHAPTER_ICON[a.slug] ?? "star",
-      photos: a.photos,
-    }));
-
-  if (noAlbumPhotos.length > 0) {
-    chapters.push({
-      id: "pa-album",
-      title: "Kujtime të tjera",
-      icon: "teddy",
-      photos: noAlbumPhotos,
-    });
-  }
+  // Fetched live from Facebook on every request (cached ~5 min) rather
+  // than imported into the database — see getLiveFacebookPhotos for why.
+  const chapters = await getLiveFacebookPhotos();
 
   return (
     <div

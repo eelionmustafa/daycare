@@ -4,7 +4,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const routes = [
     { path: "", priority: 1 },
-    { path: "/rreth-nesh", priority: 0.9 },
     { path: "/galeria", priority: 0.9 },
     { path: "/gjeneratat", priority: 0.8 },
     { path: "/regjistrohu", priority: 0.9 },

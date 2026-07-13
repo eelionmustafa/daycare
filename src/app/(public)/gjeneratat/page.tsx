@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { db } from "@/lib/db";
+import { getLiveGenerations } from "@/lib/facebook";
 import { Reveal } from "@/components/Reveal";
-import { GenerationsWall, type Generation } from "@/components/GenerationsWall";
+import { GenerationsWall } from "@/components/GenerationsWall";
 import { formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -12,70 +12,10 @@ export const metadata: Metadata = {
     "Gjeneratat që u rritën te Mësimi Kreativ: fotot dhe letrat e vërteta të diplomimit të çdo gjenerate, nga klasa e parë deri në të pestën.",
 };
 
-/** Diacritic-insensitive lowercase, so "klasës së pestë" matches "klases se peste". */
-function norm(s: string) {
-  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-}
-
-/**
- * A graduation post talks about the 5th-grade cohort or a "generation"
- * finishing — the yearly June farewell posts with certificates and cake.
- * Kept keyword-based so each future June's post appears here automatically.
- */
-function isGraduationPost(message: string | null) {
-  if (!message) return false;
-  const t = norm(message);
-  const cohort =
-    t.includes("klasen e pest") ||
-    t.includes("klases se pest") ||
-    t.includes("klasa e pest") ||
-    t.includes("gjenerat");
-  const finished =
-    t.includes("perfund") || t.includes("mbarim") || t.includes("diplom");
-  return cohort && finished;
-}
-
 export default async function GenerationsPage() {
-  const posts = await db.post.findMany({
-    where: {
-      visible: true,
-      source: "FACEBOOK",
-      message: { not: null },
-      photos: { some: { visible: true } },
-    },
-    orderBy: { postedAt: "desc" },
-    include: {
-      photos: {
-        where: { visible: true },
-        orderBy: { postOrder: "asc" },
-        select: { id: true, url: true, width: true, height: true },
-      },
-    },
-  });
-
-  // One generation per graduation year; merge if multiple posts that June.
-  const byYear = new Map<number, Generation>();
-  for (const post of posts) {
-    if (!isGraduationPost(post.message)) continue;
-    const endYear = post.postedAt.getFullYear();
-    const existing = byYear.get(endYear);
-    if (existing) {
-      existing.photos.push(...post.photos);
-      if ((post.message ?? "").length > existing.letter.length) {
-        existing.letter = post.message ?? existing.letter;
-      }
-    } else {
-      byYear.set(endYear, {
-        id: `gjenerata-${endYear}`,
-        label: `${endYear - 5} – ${endYear}`,
-        endYear,
-        dateLabel: formatDate(post.postedAt),
-        letter: post.message ?? "",
-        photos: [...post.photos],
-      });
-    }
-  }
-  const generations = Array.from(byYear.values()).sort((a, b) => b.endYear - a.endYear);
+  // Fetched live from Facebook on every request (cached ~5 min) rather
+  // than imported into the database — see getLiveGenerations for why.
+  const generations = await getLiveGenerations(formatDate);
 
   return (
     <div className="pt-24 pb-20">

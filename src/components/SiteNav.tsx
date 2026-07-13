@@ -8,7 +8,6 @@ import { Logo } from "@/components/Logo";
 
 const links = [
   { href: "/", label: "Ballina" },
-  { href: "/rreth-nesh", label: "Rreth nesh" },
   { href: "/galeria", label: "Galeria" },
   { href: "/gjeneratat", label: "Gjeneratat" },
   { href: "/pyetjet", label: "Pyetjet" },

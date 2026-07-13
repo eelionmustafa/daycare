@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { getSettings } from "@/lib/settings";
-import { runFacebookSync, uploadPhotos } from "@/app/actions/photos";
+import { uploadPhotos } from "@/app/actions/photos";
 import { updatePhoto, togglePhotoFlag, deletePhoto } from "@/app/actions/admin";
 import { formatDate } from "@/lib/format";
-import { IconSync, IconUpload } from "@/components/icons";
+import { IconUpload } from "@/components/icons";
 
 function FlagButton({
   photoId,
@@ -37,31 +36,18 @@ function FlagButton({
 export default async function AdminGalleryPage({
   searchParams,
 }: {
-  searchParams: Promise<{
-    sync?: string;
-    imported?: string;
-    skipped?: string;
-    more?: string;
-    msg?: string;
-    upload?: string;
-  }>;
+  searchParams: Promise<{ upload?: string }>;
 }) {
-  const [{ sync, imported, skipped, more, msg, upload }, photos, albums, settings] =
-    await Promise.all([
-      searchParams,
-      db.photo.findMany({
-        orderBy: [{ visible: "asc" }, { createdAt: "desc" }, { sortOrder: "asc" }],
-        include: { album: true, post: true },
-      }),
-      db.album.findMany({ orderBy: { sortOrder: "asc" } }),
-      getSettings(),
-    ]);
+  const [{ upload }, photos, albums] = await Promise.all([
+    searchParams,
+    db.photo.findMany({
+      orderBy: [{ visible: "asc" }, { createdAt: "desc" }, { sortOrder: "asc" }],
+      include: { album: true, post: true },
+    }),
+    db.album.findMany({ orderBy: { sortOrder: "asc" } }),
+  ]);
 
   const pending = photos.filter((p) => !p.visible);
-  const fbConfigured = Boolean(
-    (settings.fb_page_id && settings.fb_access_token) ||
-      (process.env.FACEBOOK_PAGE_ID && process.env.FACEBOOK_ACCESS_TOKEN)
-  );
 
   return (
     <div className="space-y-8">
@@ -70,26 +56,13 @@ export default async function AdminGalleryPage({
         <p className="mt-1 text-ink-soft">
           {photos.length} foto gjithsej · {pending.length} të fshehura
         </p>
+        <p className="mt-2 max-w-2xl text-sm text-ink-soft">
+          Fotot e Facebook-ut shfaqen drejtpërdrejt nga faqja e Facebook-ut te{" "}
+          <strong>Galeria</strong> dhe <strong>Gjeneratat</strong> e sajtit publik — nuk
+          ruhen këtu. Kjo listë përfshin vetëm fotot e ngarkuara manualisht.
+        </p>
       </div>
 
-      {sync === "ok" && (
-        <p className="rounded-xl bg-sage/15 px-4 py-3 text-sm font-semibold text-sage-deep">
-          Sinkronizimi përfundoi: {imported} foto të reja u importuan ({skipped} ekzistonin).
-          Fotot janë publike menjëherë dhe u kategorizuan automatikisht sipas përshkrimit —
-          më poshtë mund të fshihni ose fshini ato që nuk i doni.
-          {more === "1" && (
-            <>
-              {" "}Facebook-u ka ende foto të tjera — shtypni &quot;Sinkronizo tani&quot;
-              përsëri për t&apos;i sjellë ato që mbetën.
-            </>
-          )}
-        </p>
-      )}
-      {sync === "err" && (
-        <p className="rounded-xl bg-terracotta/10 px-4 py-3 text-sm font-semibold text-terracotta-deep">
-          {msg}
-        </p>
-      )}
       {upload && (
         <p className="rounded-xl bg-sage/15 px-4 py-3 text-sm font-semibold text-sage-deep">
           {upload} foto u ngarkuan me sukses.
@@ -97,35 +70,8 @@ export default async function AdminGalleryPage({
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Facebook sync */}
-        <section className="rounded-3xl bg-white p-6 shadow-soft">
-          <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="text-sky" aria-hidden>
-              <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z" />
-            </svg>
-            Sinkronizimi me Facebook
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-            Importon fotot më të reja nga faqja juaj e Facebook-ut. Fotot publikohen
-            <strong> menjëherë</strong> në galeri — më poshtë mund të fshihni ose fshini
-            ato që s&apos;i doni, dhe të zgjidhni cilat dalin në ballinë e në cilin album shkojnë.
-          </p>
-          {!fbConfigured && (
-            <p className="mt-3 rounded-xl bg-sun/15 px-4 py-3 text-sm">
-              <strong>Kujdes:</strong> Lidhja me Facebook s&apos;është konfiguruar ende. Shtoni
-              Page ID dhe Access Token te <strong>Cilësimet</strong>, ose ngarkoni fotot
-              manualisht djathtas.
-            </p>
-          )}
-          <form action={runFacebookSync} className="mt-4">
-            <button className="inline-flex items-center gap-2 rounded-full bg-sky px-6 py-3 font-bold text-white shadow-soft transition-colors hover:opacity-90">
-              <IconSync className="h-4.5 w-4.5" /> Sinkronizo tani
-            </button>
-          </form>
-        </section>
-
         {/* Manual upload */}
-        <section className="rounded-3xl bg-white p-6 shadow-soft">
+        <section className="rounded-3xl bg-white p-6 shadow-soft lg:col-span-1">
           <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
             <IconUpload className="h-5 w-5 text-terracotta" /> Ngarkim manual
           </h2>

@@ -27,7 +27,6 @@ export async function SiteFooter() {
           <h3 className="font-display text-base font-semibold">Faqet</h3>
           <ul className="mt-3 space-y-2 text-sm text-ink-soft">
             {[
-              ["/rreth-nesh", "Rreth nesh"],
               ["/galeria", "Galeria"],
               ["/gjeneratat", "Gjeneratat"],
               ["/pyetjet", "Pyetje të shpeshta"],

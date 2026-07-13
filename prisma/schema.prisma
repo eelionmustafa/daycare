@@ -2,10 +2,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Postgres (Neon, via Vercel Marketplace) for both local dev and production.
+// Postgres (Neon), accessed through Prisma Accelerate — a hosted HTTP proxy.
+// This avoids bundling any native/WASM query engine at all, which is what
+// made Cloudflare Workers deployment fail (Workers has no filesystem and
+// the various WASM-engine bundling paths all broke in different ways).
+// Accelerate also gives us connection pooling for the serverless/edge
+// request pattern.
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {

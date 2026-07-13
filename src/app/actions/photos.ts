@@ -4,21 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
-import { syncFacebookPhotos } from "@/lib/facebook";
 import { saveImage } from "@/lib/storage";
-
-export async function runFacebookSync() {
-  await requireUser("ADMIN");
-  const result = await syncFacebookPhotos();
-  revalidatePath("/admin/galeria");
-  revalidatePath("/galeria");
-  if (result.ok) {
-    redirect(
-      `/admin/galeria?sync=ok&imported=${result.imported}&skipped=${result.skipped}&more=${result.hasMore ? "1" : "0"}`
-    );
-  }
-  redirect(`/admin/galeria?sync=err&msg=${encodeURIComponent(result.error)}`);
-}
 
 const MAX_UPLOAD = 8 * 1024 * 1024; // 8MB per file
 
